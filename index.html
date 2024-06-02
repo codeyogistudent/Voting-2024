@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>वोटिंग ऐप</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .voting-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      border: none;
+      padding: 0;
+      margin: 5px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      border-radius: 16px;
+    }
+
+    button:hover {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .congress {
+      background-color: #007bff;
+    }
+
+    .aap {
+      background-color: #28a745;
+    }
+
+    .chor {
+      background-color: #dc3545;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .vote-item {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #edc87c;
+      margin-bottom: 10px;
+    }
+
+    .vote-item span {
+      font-weight: bold;
+      background-color: #000;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      width: 300px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .popup-content {
+      background-color: #fefefe;
+      padding: 20px;
+      border: 1px solid #888;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>आइए वोट करें</h1>
+    <div class="voting-buttons">
+      <button class="vote-btn" data-party="congress" data-msg="आपने विकास के लिए वोट दिया">
+        <span class="badge congress">कांग्रेस</span>
+      </button>
+      <button class="vote-btn" data-party="aap" data-msg="आपने शिक्षा के लिए वोट दिया">
+        <span class="badge aap">आप</span>
+      </button>
+      <button class="vote-btn" data-party="bjp" data-msg="आपने बीजेपी के लिए वोट दिया">
+        <span class="badge chor">बीजेपी</span>
+      </button>
+    </div>
+    <div id="result">
+      <h2>वोट गिनती:</h2>
+      <div class="vote-item">कांग्रेस: <span id="congress-count">0</span></div>
+      <div class="vote-item">आप: <span id="aap-count">0</span></div>
+      <div class="vote-item">बीजेपी: <span id="bjp-count">0</span></div>
+    </div>
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close" id="close-popup">&times;</span>
+        <p id="popup-message"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let congressCount = 0;
+    let aapCount = 0;
+    let bjpCount = 0;
+
+    function updateVoteCount() {
+      document.getElementById("congress-count").textContent = congressCount;
+      document.getElementById("aap-count").textContent = aapCount;
+      document.getElementById("bjp-count").textContent = bjpCount;
+    }
+
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
+      const popupMessage = document.getElementById("popup-message");
+      popupMessage.textContent = message;
+      popup.style.display = "block";
+    }
+
+    document.getElementById("close-popup").addEventListener("click", function() {
+      document.getElementById("popup").style.display = "none";
+    });
+
+    document.querySelectorAll(".vote-btn").forEach(button => {
+      button.addEventListener("click", function() {
+        const party = this.getAttribute("data-party");
+        const message = this.getAttribute("data-msg");
+
+        if (party === "congress") {
+          congressCount++;
+        } else if (party === "aap") {
+          aapCount++;
+        } else if (party === "bjp") {
+          bjpCount++;
+        }
+
+        updateVoteCount();
+        showPopup(message);
+      });
+    });
+
+    updateVoteCount();
+  </script>
+</body>
+</html>
+
